@@ -17,24 +17,25 @@ services:
       keycloak:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:22.0.5
+    image: bitnami/keycloak:22.0.5
     container_name: kc_server
     restart: unless-stopped
-    # command: start
-    command: start-dev
     depends_on:
       - postgresql
     environment:
-      - KC_PROXY_ADDRESS_FORWARDING=true
-      - KC_HOSTNAME_STRICT=false
-      # - KC_HOSTNAME=keycloak.jimsgarage.co.uk
-      - KC_PROXY=edge
-      - KC_HTTP_ENABLED=true
-      - DB=keycloak
-      - DB_URL='jdbc:postgresql://postgres:5432/postgresql?ssl=allow'
-      - DB_USERNAME=keycloak
-      - DB_PASSWORD=secret
-      - KEYCLOAK_ADMIN=admin
+      # - KC_HTTP_ENABLED=true
+      # - DB=keycloak
+      # - DB_URL='jdbc:postgresql://postgres:5432/postgresql?ssl=allow'
+      # - DB_USERNAME=keycloak
+      # - DB_PASSWORD=secret
+      # - KEYCLOAK_ADMIN=admin
+      # - KEYCLOAK_ADMIN_PASSWORD=password
+      - KEYCLOAK_DATABASE_HOST=postgresql
+      - KEYCLOAK_DATABASE_PORT=5432
+      - KEYCLOAK_DATABASE_NAME=keycloak
+      - KEYCLOAK_DATABASE_USER=keycloak
+      - KEYCLOAK_DATABASE_PASSWORD=secret
+      - KEYCLOAK_ADMIN_USER=admin
       - KEYCLOAK_ADMIN_PASSWORD=password
     networks:
       # proxy:
@@ -53,6 +54,7 @@ services:
     #   - "traefik.docker.network=proxy"
     ports:
       - 8080:8080
+      - 8443:8443
 
 networks:
   # proxy:
